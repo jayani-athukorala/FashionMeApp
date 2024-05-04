@@ -1,0 +1,214 @@
+/* Body styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+/* Header styles */
+.header-container {
+    background-color: #333;
+    padding: 10px 0;
+    display: flex; /* Use flexbox to align items */
+    align-items: center; /* Center items vertically */
+}
+
+/* Logo */
+.logo {
+    margin-left: 10px; /* Add margin to create space between logo and title */
+    width: 70%;
+    
+}
+
+/* Header title */
+header h1 {
+    color: #f9f9f9;
+    font-size: 40px;
+    font-family: 'Lobster', cursive;;
+}
+
+/* CSS for Navigation Menu */
+nav {
+    background-color: #444;
+    padding-top: 5px;
+    padding-bottom: 16px;
+}
+
+nav ul {
+    list-style-type: none;
+    padding-top: 15px;
+    margin: 0;
+    display: flex; /* Use flexbox */
+    justify-content: space-between; /* Align items to the start and end of the flex container */
+}
+
+nav ul li.align-right {
+    margin-left: auto; /* Push items to the right */
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 10px;
+}
+nav ul li.active a {
+    color: #333;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+nav li.active a:hover {
+    background-color: #f9f9f9;;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+nav li {
+    display: inline;
+}
+
+nav a:hover {
+    padding: 18px;
+    border-radius: 5px;
+}
+
+main {
+    padding-top: 30px;
+    padding-left: 50px; 
+    padding-right: 50px; 
+}
+
+#loginIcon img, #cartIcon img {
+    height: 15px;
+    width: auto;
+    margin-right: 5px;
+}
+
+nav ul li.active {
+    background-color: #333;
+    color: #fff;
+}
+
+/* CSS for Form Styling */
+form {
+    width: 50%;
+    margin: 0 auto;
+}
+
+form label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+form input[type="text"],
+form input[type="email"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Ensure padding and border are included in the width */
+}
+
+form input[type="submit"] {
+    background-color: #808080; /* Green */
+    color: white;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #6c6c6c;
+}
+
+
+/* CSS for Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+/* Highlight alternate rows */
+table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Hover effect on rows */
+table tr:hover {
+    background-color: #ddd;
+}
+
+/* Updated Button Styling for Add User Link */
+/* Button Styling for Add User Link */
+.add-user {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #808080; /* Advanced Gray */
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.add-user:hover {
+    background-color: #6c6c6c; /* Darker Gray on Hover */
+    transition: background-color 0.3s ease;
+}
+
+.error-message {
+    background-color: #ffcccc;
+    color: #cc0000;
+    border: 1px solid #cc0000;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.success-message {
+    background-color: #ccffcc; /* Green color for success */
+    color: #006600; /* Dark green text color */
+    border: 1px solid #006600; /* Dark green border */
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.close-btn {
+    cursor: pointer;
+    float: right;
+    font-weight: bold;
+}
+
+/* Footer styles */
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+footer p {
+    margin: 0;
+}
+
+
+

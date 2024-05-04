@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fashion Me Ecommerce</title>
+    <link rel="stylesheet" href="/order/static/css/styles.css">
+</head>
+<body>
+    <header class="header-container">
+        <div class="header-image">
+            <img src="/order/static/images/fashion_me.png" alt="Fashion Me Logo" class="logo">
+        </div>
+        <div class="header-title">            
+            <h1 class="page-heading">Fashion Me Clothing Store</h1>
+        </div>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="/home/">Home</a></li>
+            <li><a href="/product/">Products</a></li>
+            <li><a href="/customer/">Customers</a></li>
+            <li class="active"><a href="/order/">Orders</a></li>
+            <li id="loginIcon" class="align-right"><img src="/order/static/images/login.png"></li>
+            <li><b>You have logged in as : {{ user_email }}</b></li>
+            <li id="logout" class="logout"><a href="/auth/logout">Logout!</a></li>
+        </ul>
+    </nav>
+    <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                {% if category == 'success' %}
+                    <div class="success-message">
+                    {{ message }}
+                    <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    </div>
+                {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <h2>Order List</h2>
+        <hr>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Order Date</th>
+                    <th>Customer</th>
+                    <th>Product Name</th>
+                    <th>Product Category</th>
+                    <th>Status</th>
+                    <th>Change status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order[0] }}</td>
+                    <td>{{ order[1] }}</td>
+                    <td>{{ order[4] }} ({{ order[5] }})</td>
+                    <td>{{ order[6] }}</td>
+                    <td>{{ order[7] }}</td>
+                    <td>{{ order[3] }}</td>
+                    <td>
+                        <form id="statusForm{{ order[0] }}" method="post" action="/order/status" enctype="multipart/form-data">
+                            <select id="order_status{{ order[0] }}" name="order_status" onchange="submitForm('{{ order[0] }}')">
+                                {% for status in order_status %}
+                                    <option value="{{ status.status_id }}" {% if order[2] == status.status_id %}selected{% endif %}>{{ status.status_name }}</option>
+                                {% endfor %}
+                            </select>
+                            <input type="hidden" name="order_id" value="{{ order[0] }}">
+                        </form>
+                        <script>
+                            function submitForm(orderId) {
+                                document.getElementById("statusForm" + orderId).submit();
+                            }
+                        </script>                        
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>         
+        </table>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Fashion Me Ecommerce. All rights reserved.</p>
+    </footer>
+</body>
+</html>

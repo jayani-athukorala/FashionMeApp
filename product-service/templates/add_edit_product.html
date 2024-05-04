@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fashion Me Ecommerce</title>
+    <link rel="stylesheet" href="/product/static/css/styles.css">
+</head>
+<body>
+    <header class="header-container">
+        <div class="header-image">
+            <img src="/product/static/images/fashion_me.png" alt="Fashion Me Logo" class="logo">
+        </div>
+        <div class="header-title">            
+            <h1 class="page-heading">Fashion Me Clothing Store</h1>
+        </div>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="/home/">Home</a></li>
+            <li class="active"><a href="/product/">Products</a></li>
+            <li><a href="/customer/">Customers</a></li>
+            <li><a href="/order/">Orders</a></li>
+            <li id="loginIcon" class="align-right"><img src="/home/static/images/login.png"></li>
+            <li><b>You have logged in as : {{ user_email }}</b></li>
+            <li id="logout" class="logout"><a href="/auth/logout">Logout!</a></li>
+        </ul>
+    </nav>
+    <main>
+        <h2>{% if product %}Edit Product{% else %}Add Product{% endif %}</h2>
+        <hr/>
+        <form method="post" action="{% if product %}/product/edit/{{ product.id }}{% else %}/product/add{% endif %}" enctype="multipart/form-data">
+            <label for="name">Product Name:</label><br>
+            <input type="text" id="name" name="name" {% if product %}value="{{ product.name }}" {% endif %}><br>
+            <label for="category">Product Category:</label><br>
+            <select id="category" name="category">
+                {% if not product %}<option value="">----Select Category----</option>{% endif %}
+                {% for category in categories %}
+                    <option value="{{ category.category_id }}" {% if product %}{{ product.category_id }} selected{% endif %}>{{ category.name }}</option>
+                {% endfor %}
+            </select><br>
+            <label for="description">Description:</label><br>
+            <textarea id="description" name="description">{% if product %}{{ product.description }}{% endif %}</textarea><br>
+            <label for="price">Price:</label><br>
+            <input type="text" id="price" name="price" {% if product %}value="{{ product.price }}" {% endif %}><br>
+            <label for="image">Product Image (.jpg):</label><br>
+            <input type="file" id="image" name="image" accept=".jpg, .jpeg, .png"><br><br>
+            <input type="submit" value="Submit">
+        </form>
+    </main>
+    
+    <footer>
+        <p>&copy; 2024 Fashion Me Ecommerce. All rights reserved.</p>
+    </footer>
+</body>
+</html>
+

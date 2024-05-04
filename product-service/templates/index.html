@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fashion Me Ecommerce</title>
+    <link rel="stylesheet" href="/product/static/css/styles.css">
+</head>
+<body>
+    <header class="header-container">
+        <div class="header-image">
+            <img src="/product/static/images/fashion_me.png" alt="Fashion Me Logo" class="logo">
+        </div>
+        <div class="header-title">            
+            <h1 class="page-heading">Fashion Me Clothing Store</h1>
+        </div>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="/home/">Home</a></li>
+            <li class="active"><a href="/product/">Products</a></li>
+            <li><a href="/customer/">Customers</a></li>
+            <li><a href="/order/">Orders</a></li>
+            <li id="loginIcon" class="align-right"><img src="/product/static/images/login.png"></li>
+            <li><b>You have logged in as : {{ user_email }}</b></li>
+            <li id="logout" class="logout"><a href="/auth/logout">Logout!</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        {% if success %}
+            <div class="success-message">
+                {{ success }}
+                <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+            </div>
+        {% endif %}
+        <div style="overflow: auto;">
+            <h2 style="display: inline;">Product List</h2>
+            <a href="/product/add" class="add-product" style="float: right;">Add Product</a>
+        </div>
+        <br/>
+        {% if products %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Image</th>
+                    <th>Edit</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr>
+                    <td>{{ product.id }}</td>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.category }}</td>
+                    <td>{{ product.description }}</td>
+                    <td>{{ product.price }}</td>
+                    <td><a href="#" onclick="viewImage('/product/static/images/{{ product.image }}', '{{ product.name }}')">View Image</a></td>                    
+                    <td><a href="/product/edit/{{ product.id }}" class="edit-product">Edit</a> | <a href="/product/remove/{{ product.id }}" class="remove-product">Remove</a> </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No products available.</p>
+        {% endif %}
+        <!-- Modal HTML structure -->
+        <div id="imageModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <img id="modalImage" src="" alt="">
+            </div>
+        </div>
+        <!-- Include JavaScript file -->
+        <script src="/product/static/js/script.js"></script>
+    </main>
+    <footer>
+        <p>&copy; 2024 Fashion Me Ecommerce. All rights reserved.</p>
+    </footer>
+</body>
+</html>
+

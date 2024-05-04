@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fashion Me Ecommerce</title>
+    <link rel="stylesheet" href="/product/static/css/styles.css">
+</head>
+<body>
+    <header class="header-container">
+        <div class="header-image">
+            <img src="/customer/static/images/fashion_me.png" alt="Fashion Me Logo" class="logo">
+        </div>
+        <div class="header-title">            
+            <h1 class="page-heading">Fashion Me Clothing Store</h1>
+        </div>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="/home/">Home</a></li>
+            <li><a href="/product/">Products</a></li>
+            <li  class="active"><a href="/customer/">Customers</a></li>
+            <li><a href="/order/">Orders</a></li>
+            <li id="loginIcon" class="align-right"><img src="/home/static/images/login.png"></li>
+            <li><b>You have logged in as : {{ user_email }}</b></li>
+            <li id="logout" class="logout"><a href="/auth/logout">Logout!</a></li>
+        </ul>
+    </nav>
+    <main>
+        <h2>{% if customer.customer_id %}Edit Customer{% else %}Add Customer{% endif %}</h2>
+        <form method="post" action="{% if customer.id %}/edit/{{ customer.id }}{% else %}/add{% endif %}">
+            <label for="customername">Customer Name:</label><br>
+            <input type="text" id="customername" name="customername" {% if customer %}value="{{ customer.customername }}" {% endif %}><br>
+            <label for="password">Password:</label><br>
+            <input type="password" id="password" name="password"><br>
+            <label for="email">Email:</label><br>
+            <input type="email" id="email" name="email" {% if customer %}value="{{ customer.email }}" {% endif %}><br>
+            <label for="telephone">Telephone:</label><br>
+            <input type="text" id="telephone" name="telephone" {% if customer %}value="{{ customer.telephone }}" {% endif %}><br>
+            <input type="submit" value="Submit">
+        </form>
+    </main>
+    
+    <footer>
+        <p>&copy; 2024 Fashion Me Ecommerce. All rights reserved.</p>
+    </footer>
+</body>
+</html>

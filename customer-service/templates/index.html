@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fashion Me Ecommerce</title>
+    <link rel="stylesheet" href="/customer/static/css/styles.css">
+</head>
+<body>
+    <header class="header-container">
+        <div class="header-image">
+            <img src="/customer/static/images/fashion_me.png" alt="Fashion Me Logo" class="logo">
+        </div>
+        <div class="header-title">            
+            <h1 class="page-heading">Fashion Me Clothing Store</h1>
+        </div>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="/home/">Home</a></li>
+            <li><a href="/product/">Products</a></li>
+            <li class="active"><a href="/customer/">Customers</a></li>
+            <li><a href="/order/">Orders</a></li>
+            <li id="loginIcon" class="align-right"><img src="/customer/static/images/login.png"></li>
+            <li><b>You have logged in as : {{ user_email }}</b></li>
+            <li id="logout" class="logout"><a href="/auth/logout">Logout!</a></li>
+        </ul>
+    </nav>
+    <main>
+        <div style="overflow: auto;">
+            <h2 style="display: inline;">Customer List with Order Counts</h2>
+            <a href="/customer/add" class="add-customer" style="float: right;">Add Customer</a>
+        </div>
+        <br/>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Customer ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Telephone</th>
+                    <th>Account Created Date</th>
+                    <th>Status Counts</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in customers %}
+                <tr>
+                    <td>{{ customer[0] }}</td>
+                    <td>{{ customer[1] }}</td>
+                    <td>{{ customer[2] }}</td>
+                    <td>{{ customer[3] }}</td>
+                    <td>{{ customer[4] }}</td>
+                    <td>
+                        <ul class="status-list">
+                            <li>Pending: {{ customer[5] }}</li>
+                            <li>Confirmed: {{ customer[6] }}</li>
+                            <li>Shipped: {{ customer[7] }}</li>
+                            <li>Delivered: {{ customer[8] }}</li>
+                            <li>Cancelled: {{ customer[9] }}</li>
+                        </ul>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Fashion Me Ecommerce. All rights reserved.</p>
+    </footer>
+</body>
+</html>
+

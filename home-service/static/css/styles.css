@@ -1,0 +1,200 @@
+/* Body styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+/* Header styles */
+.header-container {
+    background-color: #333;
+    padding: 10px 0;
+    display: flex; /* Use flexbox to align items */
+    align-items: center; /* Center items vertically */
+}
+
+/* Logo */
+.logo {
+    margin-left: 10px; /* Add margin to create space between logo and title */
+    width: 70%;
+    
+}
+
+/* Header title */
+header h1 {
+    color: #f9f9f9;
+    font-size: 40px;
+    font-family: 'Lobster', cursive;;
+}
+
+/* CSS for Navigation Menu */
+nav {
+    background-color: #444;
+    padding-top: 5px;
+    padding-bottom: 16px;
+}
+
+nav ul {
+    list-style-type: none;
+    padding-top: 15px;
+    margin: 0;
+    display: flex; /* Use flexbox */
+    justify-content: space-between; /* Align items to the start and end of the flex container */
+}
+
+nav ul li.align-right {
+    margin-left: auto; /* Push items to the right */
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 10px;
+}
+nav ul li.active a {
+    color: #333;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+nav li.active a:hover {
+    background-color: #f9f9f9;;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+nav li {
+    display: inline;
+}
+
+nav a:hover {
+    padding: 18px;
+    border-radius: 5px;
+}
+
+main {
+    padding-top: 30px;
+    padding-left: 50px; 
+    padding-right: 50px; 
+}
+
+#featured-products {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.product-card {
+    width: 200px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.product-card img {
+    width: 100%;
+    border-radius: 5px;
+}
+
+.product-card h3 {
+    font-size: 18px;
+    margin: 10px 0;
+    color: #333;
+}
+
+.product-card p {
+    font-size: 16px;
+    margin: 0;
+    color: #666;
+}
+
+.login-popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    z-index: 1000;
+}
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+.input-group {
+    margin-bottom: 10px;
+}
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+.input-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.input-group input[type="submit"] {
+    background-color: #333;
+    color: #fff;
+    cursor: pointer;
+}
+#loginIcon img, #cartIcon img {
+    height: 16px;
+    width: auto;
+    margin-right: 5px;
+}
+
+/* Style for the sections */
+section {
+    background-color: #f4f4f4b2;
+    color: #333;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+/* Style for the section headings */
+section h2 {
+    margin-top: 0;
+    display: inline-block;
+    margin-right: 10px;
+    text-decoration: none; 
+    color: #333;
+}
+
+/* Style for icon images */
+.icon {
+    width: 30px; /* Set the width of the icon */
+    height: 30px; /* Set the height of the icon */
+    vertical-align: middle; /* Align the icon vertically with the text */
+    margin-right: 5px; /* Add some spacing between the icon and the text */
+}
+
+/* Footer styles */
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+footer p {
+    margin: 0;
+}
+

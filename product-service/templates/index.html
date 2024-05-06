@@ -28,12 +28,18 @@
     </nav>
 
     <main>
-        {% if success %}
-            <div class="success-message">
-                {{ success }}
-                <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
-            </div>
-        {% endif %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                {% if category == 'success' %}
+                    <div class="success-message">
+                    {{ message }}
+                    <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    </div>
+                {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
         <div style="overflow: auto;">
             <h2 style="display: inline;">Product List</h2>
             <a href="/product/add" class="add-product" style="float: right;">Add Product</a>

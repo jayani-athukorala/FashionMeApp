@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template, redirect, url_for, session
+from flask import Flask, request, jsonify, render_template, redirect, url_for, session, flash
 import psycopg2
 import os
 from psycopg2 import Error
@@ -7,11 +7,11 @@ app = Flask(__name__)
 
 app.secret_key = 'fashionme'
 
+# Function to connect to the PostgreSQL database
 def connect_to_db():
     try:
-        # Connect to the PostgreSQL database
         conn = psycopg2.connect(
-            host="fashionme-db",  # This should match the service name in Kubernetes
+            host="fashionme-db",
             database="fashionme_db",
             user="root",
             password="root"
@@ -21,7 +21,7 @@ def connect_to_db():
         print("Error while connecting to PostgreSQL:", e)
         return None
 
-# Get all products
+# Function to retrieve all products
 @app.route('/')
 def list_products():
     access_token = session.get('access_token')
@@ -56,14 +56,14 @@ def list_products():
     else:
         return redirect('/auth/admin')
 
+# Function to retrieve product information by ID
 def get_product(product_id):
-    # Retrieve product information from the database
     connection = connect_to_db()
     if connection:
         cursor = connection.cursor()
         try:
             cursor.execute("""
-                SELECT p.product_id, p.name, p.description, p.price, pi.image_url
+                SELECT p.product_id, p.name, p.category_id, p.description, p.price, pi.image_url
                 FROM products p
                 JOIN product_images pi ON p.product_id = pi.product_id
                 WHERE p.product_id = %s
@@ -80,7 +80,7 @@ def get_product(product_id):
             cursor.close()
             connection.close()
 
-
+# Function to retrieve all product categories
 def get_categories():
     connection = connect_to_db()
     if connection:
@@ -94,7 +94,6 @@ def get_categories():
                     'category_id': category[0],
                     'name': category[1]
                 })
-
             return categories
         except Error as error:
             print("Error while fetching categories:", error)
@@ -104,8 +103,8 @@ def get_categories():
             connection.close()
     else:
         return []
-    
 
+# Route to add a new product
 @app.route('/add', methods=['GET','POST'])
 def add_product():
     if request.method == 'POST':
@@ -117,14 +116,16 @@ def add_product():
                 name = request.form['name']
                 price = request.form['price']
                 description = request.form['description']
-                category_id = request.form['category']  # Assuming category_id is provided in the form
+                category_id = request.form['category']
                 image = request.files['image']
-                                
+                
                 # Insert product into the products table
                 cursor.execute("INSERT INTO products (name, category_id, description, price) VALUES (%s, %s, %s, %s) RETURNING product_id", (name, category_id, description, price))
                 product_id = cursor.fetchone()[0]
 
+                # Save product image
                 directory = '/product/static/images/'
+                os.makedirs(directory, exist_ok=True)
                 os.chmod(directory, 0o755)  # Set directory permissions to allow writing
                 image_path = os.path.join(directory, 'image' + str(product_id) + '.jpg')
                 image.save(image_path)
@@ -133,11 +134,13 @@ def add_product():
                 cursor.execute("INSERT INTO product_images (product_id, image_url) VALUES (%s, %s)", (product_id, image_url))
                 
                 connection.commit()
-                return redirect(url_for('index', success='Product added successfully'))
+                flash("Product "+str(product_id)+" added successfully", "success")
+                return redirect('/product/')
             except Error as error:
                 print("Error while creating product:", error)
                 connection.rollback()
-                return redirect(url_for('index', error='Failed to create product'))
+                flash("Failed to add product", "error")
+                return redirect(url_for('add_product'))
             finally:
                 cursor.close()
                 connection.close()
@@ -147,7 +150,7 @@ def add_product():
         categories = get_categories()
         return render_template('add_edit_product.html', categories=categories)
 
-# Create a new product
+# Route to edit an existing product
 @app.route('/edit/<int:product_id>', methods=['GET', 'POST'])
 def edit_product(product_id):
     if request.method == 'POST':
@@ -159,22 +162,22 @@ def edit_product(product_id):
                 name = request.form['name']
                 price = request.form['price']
                 description = request.form['description']
-                category_id = request.form['category']  # Assuming category_id is provided in the form
-                
+                category_id = request.form['category']                 
                 # Update product in the products table
                 cursor.execute("UPDATE products SET name = %s, category_id = %s, description = %s, price = %s WHERE product_id = %s", (name, category_id, description, price, product_id))
                 
                 # Update product image in the product_images table
-                # Assuming image_url is provided in the form, adjust accordingly if you are handling file uploads
                 image_url = request.form['image_url']
                 cursor.execute("UPDATE product_images SET image_url = %s WHERE product_id = %s", (image_url, product_id))
                 
                 connection.commit()
-                return redirect(url_for('index', success='Product updated successfully'))
+                flash("Product updated successfully", "success")
+                return redirect('/product/')
             except Error as error:
                 print("Error while updating product:", error)
                 connection.rollback()
-                return redirect(url_for('index', error='Failed to update product'))
+                flash("Failed to update product", "error")
+                return redirect(url_for('edit_product', product_id=product_id))
             finally:
                 cursor.close()
                 connection.close()
@@ -182,14 +185,48 @@ def edit_product(product_id):
             return jsonify({'error': 'Failed to connect to database'}), 500
     else:
         product_data = get_product(product_id)
+        
         if product_data:
+            product = {
+                'id': product_data[0],
+                'name': product_data[1],
+                'category_id': product_data[2],
+                'description': product_data[3],
+                'price': float(product_data[4]),
+                'image_url': product_data[5]
+            }
             # Fetch product categories to populate the dropdown in the form
             categories = get_categories()
-            return render_template('add_edit_product.html', product=product_data, categories=categories)
+            return render_template('add_edit_product.html', product=product, categories=categories)
         else:
             return "Product not found", 404
 
-
+# Route to delete a product
+@app.route('/remove/<int:product_id>', methods=['GET'])
+def delete_product(product_id):
+    connection = connect_to_db()
+    if connection:
+        cursor = connection.cursor()
+        try:
+            # Delete product images associated with the product
+            cursor.execute("DELETE FROM product_images WHERE product_id = %s", (product_id,))
+            
+            # Delete the product itself
+            cursor.execute("DELETE FROM products WHERE product_id = %s", (product_id,))
+            
+            connection.commit()
+            flash("Product deleted successfully", "success")
+            return redirect('/product/')
+        except Error as error:
+            print("Error while deleting product:", error)
+            connection.rollback()
+            flash("Failed to delete product", "error")
+            return redirect('/product/')
+        finally:
+            cursor.close()
+            connection.close()
+    else:
+        return jsonify({'error': 'Failed to connect to database'}), 500
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5003)

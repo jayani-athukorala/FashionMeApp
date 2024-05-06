@@ -152,14 +152,14 @@ main {
     cursor: pointer;
 }
 #loginIcon img, #cartIcon img {
-    height: 16px;
+    height: 13px;
     width: auto;
     margin-right: 5px;
 }
 
 /* Style for the sections */
 section {
-    background-color: #f4f4f4b2;
+    background-color: #999999;
     color: #333;
     padding: 20px;
     margin-bottom: 20px;

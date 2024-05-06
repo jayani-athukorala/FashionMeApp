@@ -7,7 +7,6 @@ ENV POSTGRES_PASSWORD "root"
 ENV POSTGRES_DB "fashionme_db"
 
 # Copy SQL scripts to initialize the database
-# Ensure the schema.sql runs before data.sql by naming accordingly
-COPY init.sql /docker-entrypoint-initdb.d/
-
+COPY 01_schema.sql /docker-entrypoint-initdb.d/
+COPY 02_data.sql /docker-entrypoint-initdb.d/
 

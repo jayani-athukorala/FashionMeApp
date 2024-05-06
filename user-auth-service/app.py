@@ -44,7 +44,7 @@ def admin_login():
                 session['user_id'] = admin_id[0]  # Store user ID in session
                 session['user_name'] = admin_id[1]  # Store user name in session
                 session['user_email'] = admin_id[2]  # Store user email in session
-                return redirect('/home/')
+                return redirect('/home')
             else:
                 error_message = "Invalid email or password"
                 return render_template('admin_login.html', error=error_message)

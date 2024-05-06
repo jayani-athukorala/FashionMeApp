@@ -21,24 +21,44 @@
             <li><a href="/product/">Products</a></li>
             <li  class="active"><a href="/customer/">Customers</a></li>
             <li><a href="/order/">Orders</a></li>
-            <li id="loginIcon" class="align-right"><img src="/home/static/images/login.png"></li>
+            <li id="loginIcon" class="align-right"><img src="/customer/static/images/login.png"></li>
             <li><b>You have logged in as : {{ user_email }}</b></li>
             <li id="logout" class="logout"><a href="/auth/logout">Logout!</a></li>
         </ul>
     </nav>
     <main>
-        <h2>{% if customer.customer_id %}Edit Customer{% else %}Add Customer{% endif %}</h2>
-        <form method="post" action="{% if customer.id %}/edit/{{ customer.id }}{% else %}/add{% endif %}">
+        <h2>Add Customer</h2>
+        <form method="post" action="/customer/add" onsubmit="return validateForm()">
             <label for="customername">Customer Name:</label><br>
-            <input type="text" id="customername" name="customername" {% if customer %}value="{{ customer.customername }}" {% endif %}><br>
+            <input type="text" id="customername" name="customername" value=""><br>
+            
             <label for="password">Password:</label><br>
             <input type="password" id="password" name="password"><br>
+            
+            <label for="confirm_password">Confirm Password:</label><br>
+            <input type="password" id="confirm_password" name="confirm_password"><br>
+            
             <label for="email">Email:</label><br>
-            <input type="email" id="email" name="email" {% if customer %}value="{{ customer.email }}" {% endif %}><br>
+            <input type="email" id="email" name="email" value=""><br>
+            
             <label for="telephone">Telephone:</label><br>
-            <input type="text" id="telephone" name="telephone" {% if customer %}value="{{ customer.telephone }}" {% endif %}><br>
+            <input type="text" id="telephone" name="telephone" value=""><br>
+            
             <input type="submit" value="Submit">
         </form>
+        
+        <script>
+        function validateForm() {
+            var password = document.getElementById("password").value;
+            var confirm_password = document.getElementById("confirm_password").value;
+            
+            if (password !== confirm_password) {
+                alert("Password and Confirm Password do not match");
+                return false;
+            }
+            return true;
+        }
+        </script>        
     </main>
     
     <footer>

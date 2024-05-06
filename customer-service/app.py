@@ -1,15 +1,15 @@
-from flask import Flask, render_template, request, jsonify, redirect, session, url_for
+from flask import Flask, render_template, request, jsonify, redirect, session, flash
 import psycopg2
 from psycopg2 import Error
 
 app = Flask(__name__)
 app.secret_key = 'fashionme'
 
+# Function to establish connection to the PostgreSQL database
 def connect_to_db():
     try:
-        # Connect to the PostgreSQL database
         conn = psycopg2.connect(
-            host="fashionme-db",  # This should match the service name in Kubernetes
+            host="fashionme-db",  # Hostname of PostgreSQL service
             database="fashionme_db",
             user="root",
             password="root"
@@ -19,6 +19,7 @@ def connect_to_db():
         print("Error while connecting to PostgreSQL:", e)
         return None
 
+# Route to list customers and their orders
 @app.route('/')
 def list_customers():
     access_token = session.get('access_token')
@@ -47,6 +48,8 @@ def list_customers():
                         orders o ON c.customer_id = o.customer_id
                     GROUP BY 
                         c.customer_id
+                    ORDER BY
+                        c.customer_id
                 """)
 
                 # Fetch all rows
@@ -67,8 +70,8 @@ def list_customers():
     else:
         return redirect('/auth/admin')
 
-# Function to Add a new customer
-@app.route('/add', methods=['GET','POST'])
+# Route to add a new customer
+@app.route('/add', methods=['GET', 'POST'])
 def add_customer():
     if request.method == 'POST':
         connection = connect_to_db()
@@ -79,7 +82,7 @@ def add_customer():
                 customername = request.form['customername']
                 password = request.form['password']
                 email = request.form['email']
-                telephone = request.form['telephone']  # Assuming telephone is provided in the form
+                telephone = request.form['telephone']
 
                 # Insert customer into the customers table
                 cursor.execute("INSERT INTO customers (customername, password, email, telephone) VALUES (%s, %s, %s, %s) RETURNING customer_id", (customername, password, email, telephone))
@@ -87,19 +90,21 @@ def add_customer():
                 
                 # Commit the transaction
                 connection.commit()
-                return redirect(url_for('index', success='Customer added successfully',))
+                flash("Customer "+str(customer_id)+" added successfully", "success")
+                return redirect('/customer/')
+
             except Error as error:
                 print("Error while adding customer:", error)
                 connection.rollback()
-                return redirect(url_for('index', error='Failed to add customer')) 
+                flash("Failed to add customer", "error")
+                return redirect('/customer/')
             finally:
                 cursor.close()
                 connection.close()
         else:
             return jsonify({'error': 'Failed to connect to database'}), 500
     else:
-        return render_template('add_edit_customer.html')  # Assuming you have a template for adding a new customer
+        return render_template('add_edit_customer.html')
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5004)
-

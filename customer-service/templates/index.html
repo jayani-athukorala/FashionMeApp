@@ -27,6 +27,18 @@
         </ul>
     </nav>
     <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                {% if category == 'success' %}
+                    <div class="success-message">
+                    {{ message }}
+                    <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    </div>
+                {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
         <div style="overflow: auto;">
             <h2 style="display: inline;">Customer List with Order Counts</h2>
             <a href="/customer/add" class="add-customer" style="float: right;">Add Customer</a>
@@ -52,13 +64,13 @@
                     <td>{{ customer[2] }}</td>
                     <td>{{ customer[3] }}</td>
                     <td>{{ customer[4] }}</td>
-                    <td>
-                        <ul class="status-list">
-                            <li>Pending: {{ customer[5] }}</li>
-                            <li>Confirmed: {{ customer[6] }}</li>
-                            <li>Shipped: {{ customer[7] }}</li>
-                            <li>Delivered: {{ customer[8] }}</li>
-                            <li>Cancelled: {{ customer[9] }}</li>
+                    <td class="status-list">
+                        
+                            Pending: {{ customer[5] }} |
+                            Confirmed: {{ customer[6] }} |
+                            Shipped: {{ customer[7] }} |
+                            Delivered: {{ customer[8] }} |
+                            Cancelled: {{ customer[9] }}
                         </ul>
                     </td>
                 </tr>

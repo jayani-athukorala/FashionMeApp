@@ -1,53 +1,56 @@
+# Deployment configuration for the customer service
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: customer-service
+  name: customer-service  # Name of the deployment
 spec:
-  replicas: 2
+  replicas: 2  # Number of desired replicas
   selector:
     matchLabels:
-      app: customer-service
+      app: customer-service  # Selecting pods with this label
   template:
     metadata:
       labels:
-        app: customer-service
+        app: customer-service  # Label for pods created by this deployment
     spec:
       containers:
-      - name: customer-service
-        image: jayanisathukorala/customer-service:latest
+      - name: customer-service  # Name of the container
+        image: jayanisathukorala/customer-service:latest  # Docker image for the container
         ports:
-        - containerPort: 5004
+        - containerPort: 5004  # Port exposed by the container
 
 ---
+# Service configuration for the customer service
 apiVersion: v1
 kind: Service
 metadata:
-  name: customer-service
+  name: customer-service  # Name of the service
 spec:
   selector:
-    app: customer-service
+    app: customer-service  # Selecting pods with this label
   ports:
     - protocol: TCP
-      port: 80
-      targetPort: 5004
-  type: ClusterIP
+      port: 80  # Port exposed by the service
+      targetPort: 5004  # Port targeted by the service
+  type: ClusterIP  # Type of service, in this case ClusterIP
 
 ---
+# Ingress configuration for routing traffic to the customer service
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: customer-ingress
+  name: customer-ingress  # Name of the Ingress
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$2  # target
+    nginx.ingress.kubernetes.io/rewrite-target: /$2  # Rewrite rule for path
 spec:
   rules:
-  - host: fashionme.com  # Replace with actual domain
+  - host: fashionme.com  # Host/domain for the Ingress
     http:
       paths:
-      - path: /customer(/|$)(.*)
-        pathType: Prefix
+      - path: /customer(/|$)(.*)  # Path matching for routing
+        pathType: Prefix  # Path matching type
         backend:
           service:
-            name: customer-service
+            name: customer-service  # Name of the service to route traffic to
             port:
-              number: 80
+              number: 80  # Port of the service to route traffic to

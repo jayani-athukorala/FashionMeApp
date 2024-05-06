@@ -21,7 +21,7 @@
             <li class="active"><a href="/product/">Products</a></li>
             <li><a href="/customer/">Customers</a></li>
             <li><a href="/order/">Orders</a></li>
-            <li id="loginIcon" class="align-right"><img src="/home/static/images/login.png"></li>
+            <li id="loginIcon" class="align-right"><img src="/product/static/images/login.png"></li>
             <li><b>You have logged in as : {{ user_email }}</b></li>
             <li id="logout" class="logout"><a href="/auth/logout">Logout!</a></li>
         </ul>
@@ -36,7 +36,7 @@
             <select id="category" name="category">
                 {% if not product %}<option value="">----Select Category----</option>{% endif %}
                 {% for category in categories %}
-                    <option value="{{ category.category_id }}" {% if product %}{{ product.category_id }} selected{% endif %}>{{ category.name }}</option>
+                    <option value="{{ category.category_id }}" {% if product.category_id == category.category_id %} selected{% endif %}>{{ category.name }}</option>
                 {% endfor %}
             </select><br>
             <label for="description">Description:</label><br>
@@ -44,7 +44,11 @@
             <label for="price">Price:</label><br>
             <input type="text" id="price" name="price" {% if product %}value="{{ product.price }}" {% endif %}><br>
             <label for="image">Product Image (.jpg):</label><br>
-            <input type="file" id="image" name="image" accept=".jpg, .jpeg, .png"><br><br>
+            {% if product %}
+                <input type="text" name="image_url" id="image_url" value="{{ product.image_url}}">
+            {% else %}
+                <input type="file" id="image" name="image" accept=".jpg, .jpeg, .png"><br><br>
+            {% endif %}
             <input type="submit" value="Submit">
         </form>
     </main>

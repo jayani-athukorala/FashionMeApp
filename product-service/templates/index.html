@@ -66,7 +66,7 @@
                     <td>{{ product.category }}</td>
                     <td>{{ product.description }}</td>
                     <td>{{ product.price }}</td>
-                    <td><a href="#" onclick="viewImage('/product/static/images/{{ product.image }}', '{{ product.name }}')">View Image</a></td>                    
+                    <td><a href="#" onclick="viewImage('/images/{{ product.image }}', '{{ product.name }}')">View Image</a></td>                    
                     <td><a href="/product/edit/{{ product.id }}" class="edit-product">Edit</a> | <a href="/product/remove/{{ product.id }}" class="remove-product">Remove</a> </td>
                 </tr>
                 {% endfor %}

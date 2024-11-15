@@ -26,9 +26,9 @@ def manage_orders(user_id):
     if connection:
         try:
             cursor = connection.cursor()
-            cursor.execute("SELECT * FROM orders WHERE user_id = %s", (user_id,))
-            orders = cursor.fetchall()
-            return orders
+            # cursor.execute("SELECT * FROM orders WHERE user_id = %s", (user_id,))
+            #orders = cursor.fetchall()
+            #return orders
         except (Exception, Error) as error:
             print("Error while retrieving orders:", error)
         finally:
@@ -41,9 +41,9 @@ def manage_cart(user_id):
     if connection:
         try:
             cursor = connection.cursor()
-            cursor.execute("SELECT * FROM carts WHERE user_id = %s", (user_id,))
-            cart = cursor.fetchall()
-            return cart
+            #cursor.execute("SELECT * FROM carts WHERE user_id = %s", (user_id,))
+            #cart = cursor.fetchall()
+            #return cart
         except (Exception, Error) as error:
             print("Error while retrieving cart data:", error)
         finally:

@@ -2,8 +2,10 @@ from flask import Flask, request, jsonify, render_template, redirect, url_for, s
 import psycopg2
 import os
 from psycopg2 import Error
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
+IMAGE_FOLDER = "/shared-data"
 
 app.secret_key = 'fashionme'
 
@@ -123,11 +125,15 @@ def add_product():
                 cursor.execute("INSERT INTO products (name, category_id, description, price) VALUES (%s, %s, %s, %s) RETURNING product_id", (name, category_id, description, price))
                 product_id = cursor.fetchone()[0]
 
-                # Save product image
-                directory = '/product/static/images/'
+                # Define directory path (aligned with the mount path in the deployment)
+                directory = '/shared-data/images'
                 os.makedirs(directory, exist_ok=True)
-                os.chmod(directory, 0o755)  # Set directory permissions to allow writing
-                image_path = os.path.join(directory, 'image' + str(product_id) + '.jpg')
+
+                # Define the image filename based on the product_id
+                image_filename = f"Image_{product_id}.jpg"
+                image_path = os.path.join(directory, image_filename)
+
+                # Save the uploaded image with the specified filename
                 image.save(image_path)
 
                 image_url = 'image' + str(product_id) + '.jpg'
@@ -227,6 +233,10 @@ def delete_product(product_id):
             connection.close()
     else:
         return jsonify({'error': 'Failed to connect to database'}), 500
+
+@app.route('/images/<filename>')
+def get_image(filename):
+    return send_from_directory(IMAGE_FOLDER, filename)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5003)

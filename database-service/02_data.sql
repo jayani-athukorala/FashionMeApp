@@ -57,12 +57,7 @@ INSERT INTO products (category_id, name, description, price, available) VALUES
     (('1'), 'Product 7', 'Description for Product 7', 18.49, TRUE),
     (('2'), 'Product 8', 'Description for Product 8', 22.79, TRUE),
     (('3'), 'Product 9', 'Description for Product 9', 35.99, TRUE),
-    (('4'), 'Product 10', 'Description for Product 10', 29.99, TRUE),
-    (('5'), 'Product 11', 'Description for Product 11', 14.99, TRUE),
-    (('1'), 'Product 12', 'Description for Product 12', 27.49, TRUE),
-    (('2'), 'Product 13', 'Description for Product 13', 19.79, TRUE),
-    (('3'), 'Product 14', 'Description for Product 14', 32.99, TRUE),
-    (('4'), 'Product 15', 'Description for Product 15', 23.99, TRUE);
+    (('4'), 'Product 10', 'Description for Product 10', 29.99, TRUE);
 
     -- Add data to the product_images table
 INSERT INTO product_images (product_id, image_url) VALUES
@@ -75,12 +70,7 @@ INSERT INTO product_images (product_id, image_url) VALUES
     (7, 'image7.png'),
     (8, 'image8.png'),
     (9, 'image9.png'),
-    (10, 'image10.png'),
-    (11, 'image11.png'),
-    (12, 'image12.png'),
-    (13, 'image13.png'),
-    (14, 'image14.png'),
-    (15, 'image15.png');
+    (10, 'image10.png');
 
     
 -- Add data to the orders table
@@ -113,11 +103,11 @@ INSERT INTO order_items (order_id, product_id, quantity) VALUES
     (8, 8, 3),
     (9, 9, 2),
     (10, 10, 1),
-    (11, 11, 3),
-    (12, 12, 2),
-    (13, 13, 1),
-    (14, 14, 2),
-    (15, 15, 3);
+    (11, 1, 3),
+    (12, 2, 2),
+    (13, 3, 1),
+    (14, 4, 2),
+    (15, 5, 3);
 
 -- Add data to the carts table
 INSERT INTO carts (customer_id) VALUES
@@ -147,8 +137,8 @@ INSERT INTO cart_items (cart_id, product_id, quantity) VALUES
     (6, 6, 1),
     (7, 8, 2),
     (8, 10, 3),
-    (9, 12, 1),
-    (10, 14, 2),
+    (9, 2, 1),
+    (10, 4, 2),
     (11, 1, 1),
     (12, 3, 2),
     (13, 5, 3),
